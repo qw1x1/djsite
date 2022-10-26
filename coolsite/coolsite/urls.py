@@ -16,12 +16,22 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from women.views import pageNotFound #ServerError # оброботчик ошибки 404
+from coolsite import settings #
+from django.conf.urls.static import static # Для работы со статическими данными
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('women.urls'))
+    path('', include('women.urls')),
+    path('mean/', include('mean.urls')),
+
 ]
 # handler404 - имя константы в которую передаем ссылку на обработчик ошибки 404
 handler404 = pageNotFound
 # handler500 - имя константы в которую передаем ссылку на обработчик ошибки 500
 # handler500 = ServerError
+
+# При работе с статическими данными моделей, нужно эмулировать работу отладочного сервера, для получения ранее загруженных файлов
+# В режиме отладка(settings.DEBUG=True), добавим новый маршрут для статических данных
+# При settings.DEBUG=True, добовляем маршрут для статических данных для класса models.Women поля photo
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

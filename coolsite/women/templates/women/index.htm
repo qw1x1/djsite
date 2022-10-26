@@ -1,0 +1,18 @@
+{% extends 'women/base.htm' %} <!-- импортируем базовый шаблон -->
+<!-- расширяем базовый шаблон -->
+{% block content %}
+<h1>{{title}}</h1>
+<ul>
+    <!-- Записи в модели итерируемые -->
+    {% for post in posts %} <!-- Получаем одну запись (один обьект модели) -->
+    <!-- {% if post.is_published %} -->
+    <li>
+        <h2>{{post.title}}</h2> <!-- Получаем доступ к аргументам обьекта класса -->
+        <p>{{post.content|linebreaks|truncatewords:50}}</p> <!-- Исползуем встроеный фильтр для деления content на абзаца*(цепочка фильтров) --> 
+        <div class="clear"></div>
+        <p class="linc-read-post"><a href="#">Читать пост</a></p>
+    </li>
+    <!-- {% endif %} -->
+    {% endfor %}
+</ul>
+{% endblock content %}
