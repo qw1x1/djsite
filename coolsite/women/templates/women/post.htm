@@ -1,0 +1,12 @@
+{% extends 'women/base.htm' %} <!-- импортируем базовый шаблон -->
+<!-- расширяем базовый шаблон -->
+{% block content %}
+<h1>{{title}}</h1>
+<ul>
+    <li>
+        <h2>{{posts.title}}</h2> <!-- Получаем доступ к аргументам обьекта класса -->
+        <p>{{posts.content|linebreaks}}</p> <!-- Исползуем встроеный фильтр для деления content на абзаца*(цепочка фильтров) --> 
+        <div class="clear"></div>
+    </li>
+</ul>
+{% endblock content %}
