@@ -2,11 +2,11 @@
 <!-- расширяем базовый шаблон -->
 {% block content %}
 <h1>{{title}}</h1>
-        {% if posts.photo %}
-        <p><img class="img-article-left" src="{{posts.photo.url}}"></p>
+        {% if post.photo %}
+        <p><img class="img-article-left" src="{{post.photo.url}}"></p>
         {% endif %}
  <!-- Получаем доступ к аргументам обьекта класса -->
-        <p>{{posts.content|linebreaks}}</p> <!-- Исползуем встроеный фильтр для деления content на абзаца*(цепочка фильтров) --> 
+        <p>{{post.content|linebreaks}}</p> <!-- Исползуем встроеный фильтр для деления content на абзаца*(цепочка фильтров) --> 
  
 {% endblock content %}
 
