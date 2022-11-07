@@ -49,3 +49,8 @@ w1.save()
 ---
 Women.objects.filter(id__gte=2).order_by('-title') - МОЖНО ДЕЛАТЬ ЦЕПОЧКУ МЕТОДОВ (все одним запросом) 
 @
+
+
+@
+АДМИНКА
+python manage.py createsuperuser - создает админа 

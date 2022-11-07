@@ -6,9 +6,9 @@ urlpatterns = [
     path('about/', about, name='about'),
     path('addpage/', addpage, name='add_page'),
     path('contact/', contact, name='contact'),
-    path('login/', login, name='login'),
-    path('post/<int:post_id>/', show_post, name='post'),
-    path('category/<int:cat_id>/', show_category, name='category'),
-    # path('cats/<int:cat_id>/', categories), # числовой параметр <тип:имя_параметра>, в конце ставим '/'
-    # re_path(r'archive/(?P<year>[0-9]{4})/', archive),
+    path('post/<slug:post_slug>/', show_post, name='post'),
+    path('category/<slug:cat_slug>/', show_category, name='category'),
+    # path('user_create/', create_user, name='create_user'),
+    # path('user/<slug:user_slug>/', show_user, name='show_user'),
+    path('login/', login_user, name='login_user'),
 ]

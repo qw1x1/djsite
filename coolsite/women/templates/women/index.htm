@@ -2,20 +2,24 @@
 <!-- расширяем базовый шаблон -->
 {% block content %}
 <h1>{{title}}</h1>
-<ul>
+
     <!-- Записи в модели итерируемые -->
     {% for post in posts %} <!-- Получаем одну запись (один обьект модели) -->
     <!-- {% if post.is_published %} -->
-    <li><div class="article-panel">
+    <div class="article-panel">
         <p class="first">Категория: {{ post.cat }}</p>
         <p class="last">Дата: {{post.time_update|date:"d-m-Y H:i:s"}}</p>
 </div>
-        <h2>{{ post.title }}</h2> <!-- Получаем доступ к аргументам обьекта класса -->
-        <p>{{ post.content|linebreaks|truncatewords:30 }}</p> <!-- Исползуем встроеный фильтр для деления content на абзаца*(цепочка фильтров) --> 
-        <div class="clear"></div>
-        <p class="link-read-post"><a href="{{ post.get_absolute_url }}">Читать пост</a></p>
-    </li>
+{% if post.photo %}
+    <p><img class="img-article-left thumb" src="{{ post.photo.url }}"></p>
+{% endif %}
+
+    <a href="{{ post.get_absolute_url }}"><h2>{{ post.title }}</h2></a> <!-- Получаем доступ к аргументам обьекта класса -->
+    <p>{{ post.content|linebreaks|truncatewords:50 }}</p> <!-- Исползуем встроеный фильтр для деления content на абзаца*(цепочка фильтров) --> 
+    <div class="clear"></div>
+    <p class="link-read-post"><a href="{{ post.get_absolute_url }}">Читать пост</a></p>
+  
     <!-- {% endif %} -->
     {% endfor %}
-</ul>
+
 {% endblock content %}
