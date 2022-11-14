@@ -22,8 +22,6 @@ from django.conf.urls.static import static # Для работы со стати
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('women.urls')),
-    path('mean/', include('mean.urls')),
-
 ]
 # handler404 - имя константы в которую передаем ссылку на обработчик ошибки 404
 handler404 = pageNotFound
