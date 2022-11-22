@@ -8,7 +8,8 @@ urlpatterns = [
     path('contact/', contact, name='contact'),
     path('post/<slug:post_slug>/', ShowPost.as_view(), name='post'),
     path('category/<slug:cat_slug>/', WomenCategory.as_view(), name='category'),
-    # path('user_create/', create_user, name='create_user'),
+    path('user_create/', Register_user.as_view(), name='create_user'),
+    path('login/', LoginUuser.as_view(), name='login_user'),
+    path('exit/', logout_user, name='logout_user')
     # path('user/<slug:user_slug>/', show_user, name='show_user'),
-    path('login/', login_user, name='login_user'),
 ]

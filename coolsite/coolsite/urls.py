@@ -32,4 +32,9 @@ handler404 = pageNotFound
 # В режиме отладка(settings.DEBUG=True), добавим новый маршрут для статических данных
 # При settings.DEBUG=True, добовляем маршрут для статических данных для класса models.Women поля photo
 if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)), # Добавляем debug_toolbar - в режиме отладки 
+    ] + urlpatterns
+ 
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

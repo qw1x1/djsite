@@ -19,12 +19,13 @@
 		<ul id="mainmenu" class="mainmenu">
 		<li class="logo"><a href="{% url 'home' %}"><div class="logo"></div></a></li>
 {% for m in menu %}
-{% if not forloop.last %}
 		<li><a href="{% url m.url_name %}">{{m.title}}</a></li>
-{% else %}
-		<li class="last"><a href="{% url m.url_name %}">{{m.title}}</a></li>
-{% endif %}
 {% endfor %}
+			{% if request.user.is_authenticated %}
+			<li class="last"> {{ user.username }} <a href="{% url 'logout_user'%}">| Выход</a></li>
+			{% else %}
+			<li class="last"><a href="{% url 'login_user'%}">Вход</a></li>
+			{% endif %}
 		</ul>
 		<div class="clear"></div>
 	</div>
@@ -56,11 +57,6 @@
 
 		<!-- передаем два пареметра 1-для сортировик, 2-для определения активной ссылки -->
 		<!-- { show_categories 'name' cat_selected } используем Включающий тег для генерации html, который отображает категории -->
-
-		<li class="share">
-		<p>Наш канал</p>
-		<a class="share-yt" href="#" target="_blank" rel="nofollow"></a>
-		</li>
 	</ul>
 </td>
 <!-- Конец Sidebar'а -->
@@ -69,31 +65,39 @@
 	{% block breadcrumbs %}
 	{% endblock %}
 
+
 <!-- Блок контента -->
 	<div class="content-text">
 {% block content %}
 {% endblock %}
-{% if page_obj.has_other_pages  %}
+
+<!-- Если страница имеет кол-во записей равное или меньшее чем указано в paginate_by,
+	 то будет отображена одна страница, погинация не будет разбивать список на страницы, 
+	 т.к запеси помещаются на 1 странице -->
+{% if page_obj.has_other_pages  %} 
 <nav class="list-pages">
     <ul>
 		
 {% if page_obj.has_next %}
 <li class="page-num">
-         <a href="?page={{ page_obj.next_page_number }}">&gt;</a>
+         <a href="?page={{ page_obj.next_page_number }}">&gt;</a> <!-- Если страница не последняя, то обтбражаем next -->
 </li>
 {% endif %}
+<!-- ListView - передаёт в шаблон paginator и page_obj -->
         {% for p in paginator.page_range %}
-                   {% if page_obj.number == p %}
-        <li class="page-num page-num-selected">{{ p }}</li>
+        {% if page_obj.number == p %} <!-- page_obj.number - отображает номер текущей страницы -->
+        <li class="page-num page-num-selected">{{ p }}</li> <!-- Если True, то селектор активен -->
         {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2  %}
+
         <li class="page-num">
-            <a href="?page={{ p }}">{{ p }}</a>
+            <a href="?page={{ p }}">{{ p }}</a> <!-- Отображаем номера и ссылки на другие страницы -->
         </li>
-                   {% endif %}
+        {% endif %}
         {% endfor %}
+
 {% if page_obj.has_previous %}
 <li class="page-num">
-         <a href="?page={{ page_obj.previous_page_number }}">&lt;</a>
+         <a href="?page={{ page_obj.previous_page_number }}">&lt;</a> <!-- Если страница не перваяб то обтбражаем previo -->
 </li>
 {% endif %}
     </ul>

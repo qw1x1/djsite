@@ -3,8 +3,9 @@
 {% block content %}
 <h1>{{title}}</h1>
 
-<form action="{% url 'login_user' %}" method="post">
+<form method="post">
     {% csrf_token %}
+
 
     <div class="form-error">{{ form.non_field_errors }}</div>
  
@@ -13,7 +14,7 @@
     <div class="form-error">{{ f.errors }}</div>
     {% endfor %}
     
-    <button type="submit">Войти</button> <button type="submit">Создать аккаунт</button>
+    <button type="submit">Войти</button> <button ><a href="{% url 'create_user' %}">Создать аккаунт</a></button>
 </form>
 
 {% endblock content %}

@@ -1,11 +1,11 @@
 Виртуальное окружение:  python -m venv venv
 При запуске виртуального окружения может возникнуть ошибка: https://gist.github.com/2ik/3ddbef3263dee8e76b63a391e2ffe5d0?permalink_comment_id=4077417
-Запуск виртуального окружения: .\venv\Scripts\activate
+Запуск виртуального окружения: .\venv\Scripts\activate 
 Создание файла с зависимостями: pip freeze > requirements.txt
 Загрузка библиотек с помощю файла с зависимостями: pip install -r requirements.txt
 .gitignore - для игнорирования файлов (не загрузяться на git)
 Создание проекта django: django-admin startproject <имя>
-При запуске сервера нужно находиться в папке проекта!
+При запуске сервера нужно находиться в папке приложения!
 Запуск сервера: python manage.py runserver
 При создании приложения нужно находиться в папке проекта!
 Создание приложения django: python manage.py startapp <имя>
@@ -47,7 +47,7 @@ w1.save()
 2. ИЗМЕНЕНИЕ: Переопределяем поля(атрибуты обьекта);   | w1.title='Значение' |
 3. Сохраняем;    | w1.save() |
 ---
-Women.objects.filter(id__gte=2).order_by('-title') - МОЖНО ДЕЛАТЬ ЦЕПОЧКУ МЕТОДОВ (все одним запросом) 
+Women.objects.filter(id__gte=2).order_by('-title') - МОЖНО ДЕЛАТЬ ЦЕПОЧКУ МЕТОДОВ (все одним запросом)
 @
 
 

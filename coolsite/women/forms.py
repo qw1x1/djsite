@@ -1,7 +1,8 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from .models import *
-
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm # Импортформы добавления нового пользователя
+from django.contrib.auth.models import User
 
 
 # В шаблоне по полям формы можно итерироваться!
@@ -37,23 +38,22 @@ class AddPostForm(forms.ModelForm):
 
         return title
 
-# class Input(forms.Form):
-#     # required = False - делает поле не обязательным
-#     # initial= True - чекбокс активен по умолчанию
-#     # Для добовления определённых стилей к полю прописываем атрибут widget
+class RegisterUserForm(UserCreationForm):
+    username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={'class': 'form-input'}))
+    email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'form-input'}))
+    password1 = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-input'}))
+    password2 = forms.CharField(label='Повтор пароля', widget=forms.PasswordInput(attrs={'class': 'form-input'}))
 
-#     class Meta:
-#         model = User # Связь с моделью
-#         fields = ['name', 'slug', 'login', 'password', 'photo'] #Отображаем выбраные поля модели
-#         # В виджете мы указываем каким полям и какие стили применяем.
-#         widgets = {
-#             'name': forms.TextInput(attrs={'class': 'form-input'}),
-#         }
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password1', 'password2')
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-input'}),
+            'email': forms.EmailInput(attrs={'class': 'form-input'}),
+            'password1': forms.PasswordInput(attrs={'class': 'form-input'}),
+            'password2': forms.PasswordInput(attrs={'class': 'form-input'}),
+        }
 
-    # Для создания ваоидатора пишем метод clean_<имя_поля>
-    # def clean_login(self): # Валидатор доя поля title
-    #     login = self.cleaned_data['login'] # Получаем данные из колекции cleaned_data (берём title)
-    #     if len(login) < 200:
-    #         raise ValidationError('Данный логин уже занят')
-
-    #     return login
+class LoginUserForm(AuthenticationForm):
+    username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={'class': 'form-input'}))
+    password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-input'}))
