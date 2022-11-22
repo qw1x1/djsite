@@ -20,6 +20,7 @@ class WomenHome(DataMixin, ListView):
     # extra_context = {'title': 'Главная страница'} С помощю данной переменной можно передавать статические данные (но не динамические)
     # Для передачи динамических данных переопределяем метод get_context_data
     # paginate_by = 3 # количество показываемых записей на странице 
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs) # Берем ранее созданый контекст, чтобы не потерять его 
         # context['title'] = 'Главная страница' # добавляем данные в контекст (можно и статичесткие, но можно и список, например меню)
@@ -28,9 +29,11 @@ class WomenHome(DataMixin, ListView):
          # Обращаемся к методу миксина через self т.к он есть в нашем классе
         c_def = self.get_user_context(title="Главная страница") # Плюс передаем в kwargs(в наш контекст) -> title
         return dict(list(context.items()) + list(c_def.items())) # Объеденяем два наших контекста из ListView и DataMixin в один 
+
     # Для выборки данных оперделим метод get_queryset
     def get_queryset(self):
-        return Women.objects.filter(is_published=True) # Вернёт только опубликованные записи
+        # .select_related('cat') - жадная загруpка ForeignKey
+        return Women.objects.filter(is_published=True).select_related('cat') # Вернёт только опубликованные записи
 
 # Страница отдельной категории
 class WomenCategory(DataMixin ,ListView):
@@ -42,13 +45,14 @@ class WomenCategory(DataMixin ,ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs) # Сохраняем уже сформированный контекст
         # Через контекст обращаемся к posts, берём 1-ю запись и берем категорию, при этом в модели сработаем метод __str__ и вернём name
-        c_def = self.get_user_context(title='Категория - ' + str(context['posts'][0].cat), cat_selected=context['posts'][0].cat_id )
+        c = Category.objects.get(slug=self.kwargs['cat_slug'])
+        c_def = self.get_user_context(title='Категория - ' + str(c.name), cat_selected=c.pk)
         return dict(list(context.items()) + list(c_def.items()))
  
     def get_queryset(self):
         # self.kwargs - через данный словать можем получить все переменные нашего маршрута
         # Для выборки данных из связанной модели Category используя cat__slug можем обрятиться к конкретоной категории и просмотреть ее поле (slug, и т.п)
-        return Women.objects.filter(cat__slug=self.kwargs['cat_slug'], is_published=True) 
+        return Women.objects.filter(cat__slug=self.kwargs['cat_slug'], is_published=True).select_related('cat') 
 
 # Страница отдельного поста
 class ShowPost(DataMixin ,DetailView):

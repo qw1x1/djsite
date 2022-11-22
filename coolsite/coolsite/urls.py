@@ -34,7 +34,7 @@ handler404 = pageNotFound
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns = [
-        path('__debug__/', include(debug_toolbar.urls)), # Добавляем debug_toolbar - в режиме отладки 
+        path('__debug__/', include('debug_toolbar.urls')), # Добавляем debug_toolbar - в режиме отладки 
     ] + urlpatterns
  
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
