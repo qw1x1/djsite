@@ -2,10 +2,11 @@ from django.urls import path, re_path #re_pach - позволяет задава
 from .views import *
 
 urlpatterns = [
+    # path('', cache_page(60)(WomenHome.as_view()), name='home'), Полностью кеширует представление  
     path('', WomenHome.as_view(), name='home'), # name='home' - это именованный параметр для внутреннего обращения в коде (например для редиректа) 
     path('about/', about, name='about'),
     path('addpage/', AddPage.as_view(), name='add_page'),
-    path('contact/', contact, name='contact'),
+    path('contact/', ContactFormView.as_view(), name='contact'),
     path('post/<slug:post_slug>/', ShowPost.as_view(), name='post'),
     path('category/<slug:cat_slug>/', WomenCategory.as_view(), name='category'),
     path('user_create/', Register_user.as_view(), name='create_user'),

@@ -21,6 +21,7 @@ from django.conf.urls.static import static # Для работы со стати
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('captcha/', include('captcha.urls')),
     path('', include('women.urls')),
 ]
 # handler404 - имя константы в которую передаем ссылку на обработчик ошибки 404
@@ -33,8 +34,7 @@ handler404 = pageNotFound
 # При settings.DEBUG=True, добовляем маршрут для статических данных для класса models.Women поля photo
 if settings.DEBUG:
     import debug_toolbar
-    urlpatterns = [
-        path('__debug__/', include('debug_toolbar.urls')), # Добавляем debug_toolbar - в режиме отладки 
-    ] + urlpatterns
+    # Добавляем debug_toolbar - в режиме отладки
+    urlpatterns = [path('__debug__/', include(debug_toolbar.urls))] + urlpatterns
  
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

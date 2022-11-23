@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from .models import * # Импортируем модели
 from .forms import * # Импортируем формы
 from .utils import * # Импортируем миксины
-from django.views.generic import ListView, DetailView, CreateView # Импортируем классы-представления
+from django.views.generic import ListView, DetailView, CreateView, FormView # Импортируем классы-представления
 # ListView - отображает список записей модели 
 # DetailViev - отображает конкретную запись модели 
 # CreateView - для работы с формами
@@ -36,7 +36,7 @@ class WomenHome(DataMixin, ListView):
         return Women.objects.filter(is_published=True).select_related('cat') # Вернёт только опубликованные записи
 
 # Страница отдельной категории
-class WomenCategory(DataMixin ,ListView):
+class WomenCategory(DataMixin, ListView):
     model = Women 
     template_name = 'women/index.htm'
     context_object_name = 'posts'
@@ -55,7 +55,7 @@ class WomenCategory(DataMixin ,ListView):
         return Women.objects.filter(cat__slug=self.kwargs['cat_slug'], is_published=True).select_related('cat') 
 
 # Страница отдельного поста
-class ShowPost(DataMixin ,DetailView):
+class ShowPost(DataMixin, DetailView):
     model = Women
     template_name = 'women/post.htm'
     slug_url_kwarg = 'post_slug' # Принудительно переопреденяем имя переменной из urls, (pk_url_kwarg = 'имя из urls' - для id)
@@ -103,15 +103,32 @@ class LoginUuser(DataMixin, LoginView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title='Авторизация') # Плюс передаем в kwargs(в наш контекст) -> title
+        c_def = self.get_user_context(title='Авторизация')
         return dict(list(context.items()) + list(c_def.items()))
 
     # success_url = reverse_lazy('home')
     def get_success_url(self):
         return reverse_lazy('home')
 
+# Форма обратной связи
+class ContactFormView(DataMixin, FormView):
+    form_class = ContactForm
+    template_name = 'women/contact.htm'
+    success_url = reverse_lazy('home')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title='Обратная связь')
+        return dict(list(context.items()) + list(c_def.items()))
+
+    def form_valid(self, form):
+        print(form.cleaned_data)
+        return redirect('home')
+
+
+# Функция выхода пользователя
 def logout_user(request):
-    logout(request) # Функция выхода пользователя
+    logout(request) 
     return redirect('home')
 
 def about(request):

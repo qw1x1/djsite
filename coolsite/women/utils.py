@@ -1,4 +1,6 @@
 from .models import *
+from django.db.models import Count
+from django.core.cache import cache
 
 
 menu = [{'title': "О сайте", 'url_name': 'about'},
@@ -11,7 +13,11 @@ class DataMixin:
 
     def get_user_context(self, **kwargs):
         context = kwargs
-        cats = Category.objects.all()
+        # API низкоуровневого кеширования
+        cats = cache.get('cats')
+        if not cats:
+            cats = Category.objects.annotate(Count('women'))
+            cache.set('cats', cats, 60)
  
         user_menu = menu.copy()
         # Т.к DataMixin связан с запросом у него есть доступ к request
